@@ -7,6 +7,7 @@ import '/constants.dart';
 import '/controller/movieController.dart';
 import '/view/movie_search.dart';
 import 'movie_desc.dart';
+import 'favMovie.dart';
 
 class Home extends StatelessWidget {
   final MovieController movieController = Get.put(MovieController());
@@ -21,7 +22,12 @@ class Home extends StatelessWidget {
         //   color: Color(0xFF01b4e4),
         // ),
         centerTitle: true,
-        leading: Icon(Icons.menu),
+        leading: InkWell(
+            onTap: () {
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => favMoviesScreen()));
+            },
+            child: Icon(Icons.bookmarks_sharp)),
         actions: [
           IconButton(
             icon: Icon(Icons.search_outlined),
@@ -189,7 +195,7 @@ class Home extends StatelessWidget {
                                   Expanded(
                                     child: CarouselSlider.builder(
                                       options: CarouselOptions(
-                                        autoPlay: false,
+                                        autoPlay: true,
                                         viewportFraction: 0.5,
                                         height: size.height,
                                         enlargeCenterPage: true,
@@ -206,6 +212,8 @@ class Home extends StatelessWidget {
                                             movieController.getMovieDetail(
                                                 movieController
                                                     .selectedMovie.value.id);
+                                            print(
+                                                "$posterURL${movieController.trendingMovies[index].posterURL}");
                                             Navigator.push(
                                                 context,
                                                 MaterialPageRoute(

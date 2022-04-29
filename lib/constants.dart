@@ -12,3 +12,5 @@ final youtubeSearch = 'https://www.youtube.com/results?search_query=';
 
 final searchMovie =
     'https://api.themoviedb.org/3/search/movie$apiKey&language=en-US&query=';
+final favMoviesId = [];
+// var favMovie = new List();

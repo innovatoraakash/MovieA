@@ -3,8 +3,14 @@ import 'package:get/get.dart';
 import '/constants.dart';
 import '/controller/movieController.dart';
 
-class MovieDescription extends StatelessWidget {
+class MovieDescription extends StatefulWidget {
+  @override
+  State<MovieDescription> createState() => _MovieDescriptionState();
+}
+
+class _MovieDescriptionState extends State<MovieDescription> {
   final MovieController movieController = Get.put(MovieController());
+
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
@@ -65,8 +71,31 @@ class MovieDescription extends StatelessWidget {
                                             ))
                                         .toList()),
                                 trailing: IconButton(
-                                  icon: Icon(Icons.favorite),
-                                  onPressed: () {},
+                                  icon: movieController.movie.value.isFav
+                                      ? Icon(Icons.favorite)
+                                      : Icon(Icons.favorite_border),
+                                  onPressed: () {
+                                    setState(() {
+                                      movieController.movie.value.isFav =
+                                          !movieController.movie.value.isFav;
+                                    });
+
+                                    if (movieController.movie.value.isFav ==
+                                        true) {
+                                      if (!favMoviesId.contains(
+                                          movieController.movie.value.id)) {
+                                        favMoviesId.add(
+                                            movieController.movie.value.id);
+                                        movieController.getFavMovie(
+                                            movieController.movie.value.id);
+                                      }
+                                    } else {
+                                      movieController.removeFavMovie(
+                                          movieController.movie.value.id);
+                                    }
+
+                                    print(favMoviesId);
+                                  },
                                 ),
                               ),
                               Wrap(

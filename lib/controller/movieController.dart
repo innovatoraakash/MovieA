@@ -4,12 +4,31 @@ import '/model/detailedMovieModel.dart';
 import '/model/trendingMovieModel.dart';
 import '/services/apiService.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:movieassignment/constants.dart';
+import 'package:movieassignment/model/favMovieModel.dart';
 
 class MovieController extends GetxController {
   var isLoading = true.obs;
   List<TrendingMovie> trendingMovies = List<TrendingMovie>().obs;
   List<TrendingMovie> searchedMovies = List<TrendingMovie>().obs;
+  List<FavourateMovie> favMovies = List<FavourateMovie>().obs;
   var movie = DetailedMovie(
+          bgURL: null,
+          category: null,
+          id: null,
+          overview: null,
+          posterURL: null,
+          rating: null,
+          releaseYear: null,
+          title: null,
+          budget: null,
+          cast: null,
+          crew: null,
+          revenue: null,
+          runtime: null,
+          isFav: null)
+      .obs;
+  var selectedMovie = TrendingMovie(
     bgURL: null,
     category: null,
     id: null,
@@ -18,23 +37,8 @@ class MovieController extends GetxController {
     rating: null,
     releaseYear: null,
     title: null,
-    budget: null,
-    cast: null,
-    crew: null,
-    revenue: null,
-    runtime: null,
   ).obs;
-  var selectedMovie = TrendingMovie(
-          bgURL: null,
-          category: null,
-          id: null,
-          overview: null,
-          posterURL: null,
-          rating: null,
-          releaseYear: null,
-          title: null)
-      .obs;
-
+  var favourateMovie = FavourateMovie(posterURL: null, id: null).obs;
   @override
   void onInit() {
     getTrendingMovies();
@@ -51,6 +55,33 @@ class MovieController extends GetxController {
     if (_movies != null) {
       searchedMovies = _movies;
     }
+    isLoading(false);
+  }
+
+  void getFavMovie(var id) async {
+    isLoading(true);
+    // for (var id in ids) {
+    var _movie = await APIService.getMovieDetail(id);
+    if (_movie != null) {
+      FavourateMovie _favmovie =
+          FavourateMovie(posterURL: _movie.posterURL, id: _movie.id);
+      favMovies.add(_favmovie);
+    }
+    // }
+    isLoading(false);
+  }
+
+  void removeFavMovie(var id) async {
+    // for (var id in ids) {
+    final movieIndex =
+        this.favMovies.indexWhere((favMovies) => favMovies.id == id);
+    this.favMovies.removeAt(movieIndex);
+    favMoviesId.remove(id);
+    // FavourateMovie _favmovie =
+    //     FavourateMovie(posterURL: _movie.posterURL, id: _movie.id);
+    // favMovies.remove(_favmovie);
+    print(movieIndex);
+    // }
     isLoading(false);
   }
 

@@ -15,6 +15,7 @@ class DetailedMovie {
   int runtime;
   List<Crew> crew;
   List<Cast> cast;
+  bool isFav = false;
 
   DetailedMovie({
     this.id,
@@ -30,6 +31,7 @@ class DetailedMovie {
     this.runtime,
     this.crew,
     this.cast,
+    this.isFav,
   });
 
   DetailedMovie.fromMap(Map<String, dynamic> map) {
